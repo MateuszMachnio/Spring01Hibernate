@@ -2,6 +2,8 @@ package pl.coderslab.app.entity;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -17,8 +19,21 @@ public class Book {
 
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "publisher_id")
+    private Publisher publisher;
+
+    @ManyToMany
+    @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private Set<Author> authors = new HashSet<>();
+
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void addAuthor(Author author) {
+        authors.add(author);
+        author.addBook(this);
     }
 
     public Long getId() {
@@ -49,6 +64,22 @@ public class Book {
         this.description = description;
     }
 
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -56,6 +87,8 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", rating=" + rating +
                 ", description='" + description + '\'' +
+                ", publisher=" + publisher +
+                ", authors=" + authors +
                 '}';
     }
 }

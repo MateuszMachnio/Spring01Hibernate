@@ -21,7 +21,8 @@ public class AuthorController {
     @ResponseBody
     public String save() {
         Author author = new Author();
-        author.setFirstName("Javaman");
+        author.setFirstName("Javaman2");
+        author.setLastName("ciekawy");
 //        author.setAuthor("Bruce Eckel");
         authorDao.saveAuthor(author);
         return "Id dodanego autora to:" + author.getId();

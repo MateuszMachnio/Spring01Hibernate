@@ -1,6 +1,8 @@
 package pl.coderslab.app.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "authors")
@@ -13,6 +15,13 @@ public class Author {
     private String firstName;
 
     private String lastName;
+
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> books = new HashSet<>();
+
+    public void addBook(Book book) {
+        books.add(book);
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -38,12 +47,21 @@ public class Author {
         this.lastName = lastName;
     }
 
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
+
     @Override
     public String toString() {
         return "Author{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", books=" + books +
                 '}';
     }
 }

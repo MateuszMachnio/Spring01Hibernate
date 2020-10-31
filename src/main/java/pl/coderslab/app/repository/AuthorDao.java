@@ -1,5 +1,6 @@
 package pl.coderslab.app.repository;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import pl.coderslab.app.entity.Author;
 import pl.coderslab.app.entity.Book;
