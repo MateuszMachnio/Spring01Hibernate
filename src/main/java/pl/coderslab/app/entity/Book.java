@@ -1,5 +1,7 @@
 package pl.coderslab.app.entity;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashSet;
@@ -27,13 +29,17 @@ public class Book {
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
 
-    public void setId(Long id) {
-        this.id = id;
+    public Book() {
+
     }
 
     public void addAuthor(Author author) {
         authors.add(author);
         author.addBook(this);
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

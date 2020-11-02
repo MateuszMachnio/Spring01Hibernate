@@ -1,5 +1,7 @@
 package pl.coderslab.app.entity;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
