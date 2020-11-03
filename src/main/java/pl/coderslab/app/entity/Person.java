@@ -16,8 +16,7 @@ public class Person {
 
     private String email;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "person_details_id")
+    @OneToOne(mappedBy = "person")
     private PersonDetails personDetails;
 
     public Person() {
@@ -60,5 +59,15 @@ public class Person {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
