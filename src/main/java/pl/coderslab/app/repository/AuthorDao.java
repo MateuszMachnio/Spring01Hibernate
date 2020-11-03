@@ -27,11 +27,11 @@ public class AuthorDao {
         return entityManager.find(Author.class, id);
     }
 
-//    public Author findByIdWithBooks(long id) {
-//        Author author = findById(id);
-//        Hibernate.initialize(author.getBooks());
-//        return author;
-//    }
+    public Author findByIdWithBooks(long id) {
+        Author author = findById(id);
+        Hibernate.initialize(author.getBooks());
+        return author;
+    }
 
     public void update(Author author) {
         entityManager.merge(author);

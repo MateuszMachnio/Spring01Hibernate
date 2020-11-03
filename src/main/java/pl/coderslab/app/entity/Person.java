@@ -16,6 +16,10 @@ public class Person {
 
     private String email;
 
+    @OneToOne(optional = false)
+    @JoinColumn(name = "person_details_id")
+    private PersonDetails personDetails;
+
     public Person() {
 
     }
