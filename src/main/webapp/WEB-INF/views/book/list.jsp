@@ -20,7 +20,8 @@
             <td>${book.rating}</td>
             <td>${book.description}</td>
             <td>${book.publisher.name}</td>
-            <td><a href="/bookBind/edit/${book.id}"></a></td>
+            <td><a href="/book-bind/edit/${book.id}">Edit</a></td>
+            <td><a href="/book-bind/delete/${book.id}">Delete</a></td>
         </tr>
     </c:forEach>
 </table>

@@ -5,15 +5,15 @@
     <title>Student form</title>
 </head>
 <body>
-<form:form modelAttribute="student">
+<form:form modelAttribute="student" method="post">
     <label>Name:
         <form:input path="firstName" /><br />
     </label>
     <label>Surname:
         <form:input path="lastName" /><br />
     </label>
-        <form:radiobutton path="gender" value="M" label="Male:"/>
-        <form:radiobutton path="gender" value="F" label="Female:"/><br />
+        Male: <form:radiobutton path="gender" value="M" />
+        Female: <form:radiobutton path="gender" value="F" /><br />
     <label>Country:
         <form:select path="country" multiple="false">
             <form:option value="-" label="--Please Select--"/>

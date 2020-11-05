@@ -49,7 +49,7 @@ public class BookDao {
         return query.getResultList();
     }
 
-    public List<Book> getBooksWithPublisher() {
+    public List<Book> getBooksWhichHavePublisher() {
         TypedQuery<Book> query = entityManager.createQuery("SELECT b FROM Book b JOIN b.publisher", Book.class);
         return query.getResultList();
     }

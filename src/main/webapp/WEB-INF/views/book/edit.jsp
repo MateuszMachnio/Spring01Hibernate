@@ -5,7 +5,9 @@
     <title>Edit book</title>
 </head>
 <body>
-<form:form modelAttribute="book">
+<form:form modelAttribute="book" action="/book-bind/edit" method="post">
+
+    <form:hidden path="id" />
     <form:label path="title">Tytuł: </form:label>
     <form:input path="title" /><br />
 
@@ -17,7 +19,7 @@
 
     <form:label path="publisher">Wydawca: </form:label>
     <form:select path="publisher" items="${publishers}" itemLabel="name" itemValue="id"/><br />
-    <input type="submit" value="Prześlij">
+    <input type="submit" value="Edytuj">
 </form:form>
 </body>
 </html>

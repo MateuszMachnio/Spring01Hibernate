@@ -11,7 +11,7 @@ import pl.coderslab.app.repository.PublisherDao;
 import java.util.List;
 
 @Controller
-@RequestMapping("/bookBind")
+@RequestMapping("/book-bind")
 public class BookFormController {
 
     private final BookDao bookDao;
@@ -50,10 +50,28 @@ public class BookFormController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable long id, Model model) {
+    public String editForm(@PathVariable long id, Model model) {
         Book byId = bookDao.findById(id);
         model.addAttribute("book", byId);
         return "book/edit";
     }
 
+    @PostMapping("/edit")
+    public String edit(Book book) {
+        bookDao.update(book);
+        return "redirect:list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteForm(@PathVariable long id, Model model) {
+        Book byId = bookDao.findById(id);
+        model.addAttribute("book", byId);
+        return "book/deleting-confirmation";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteBook(@PathVariable long id) {
+        bookDao.delete(bookDao.findById(id));
+        return "redirect:/book-bind/list";
+    }
 }

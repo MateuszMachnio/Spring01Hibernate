@@ -5,11 +5,11 @@
     <title>Person form bind</title>
 </head>
 <body>
-<form:form modelAttribute="person">
+<form:form method="post" modelAttribute="person">
     <label>Login:
     <form:input path="login" />
     </label>
-    <form:label path="password" for="password">Password:</form:label>
+    <form:label path="password">Password:</form:label>
     <form:password path="password" />
     <form:input path="email" />
     <input type="submit" value="Prześlij" />
