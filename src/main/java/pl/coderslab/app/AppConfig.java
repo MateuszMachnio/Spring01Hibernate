@@ -14,7 +14,10 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import pl.coderslab.app.converter.AuthorConverter;
+import pl.coderslab.app.converter.BookConverter;
 import pl.coderslab.app.converter.PublisherConverter;
+import pl.coderslab.app.entity.Book;
 import pl.coderslab.app.repository.PublisherDao;
 
 import javax.persistence.EntityManagerFactory;
@@ -48,6 +51,8 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(publisherConverter());
+        registry.addConverter(authorConverter());
+        registry.addConverter(bookConverter());
     }
 
     @Bean
@@ -65,5 +70,15 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public PublisherConverter publisherConverter() {
         return new PublisherConverter();
+    }
+
+    @Bean
+    public AuthorConverter authorConverter() {
+        return new AuthorConverter();
+    }
+
+    @Bean
+    public BookConverter bookConverter() {
+        return new BookConverter();
     }
 }

@@ -1,23 +1,79 @@
 package pl.coderslab.app.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.app.entity.Author;
+import pl.coderslab.app.entity.Book;
 import pl.coderslab.app.repository.AuthorDao;
-import pl.coderslab.app.repository.AuthorDao;
+import pl.coderslab.app.repository.BookDao;
 
+import java.util.List;
+
+@RequestMapping("/author")
 @Controller
 public class AuthorController {
 
     private final AuthorDao authorDao;
+    private final BookDao bookDao;
     
-    public AuthorController(AuthorDao authorDao) {
+    public AuthorController(AuthorDao authorDao, BookDao bookDao) {
         this.authorDao = authorDao;
+        this.bookDao = bookDao;
+    }
+
+    @ModelAttribute("authors")
+    public List<Author> authors() {
+        return authorDao.getAll();
+    }
+
+    @ModelAttribute("books")
+    public List<Book> books() {
+        return bookDao.findAll();
+    }
+
+    @RequestMapping("/list")
+    public String showAuthors() {
+        return "/author/list";
+    }
+
+    @GetMapping("/form")
+    public String addAuthor(Model model) {
+        model.addAttribute("author", new Author());
+        return "/author/form";
+    }
+
+    @PostMapping("/form")
+    public String addingAuthor(Author author) {
+        authorDao.saveAuthor(author);
+        return "redirect:list";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(Model model, @PathVariable Long id) {
+        model.addAttribute("author", authorDao.findByIdWithBooks(id));
+        return "author/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editProcess(Author author) {
+        authorDao.update(author);
+        return "redirect:/author/list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(Model model, @PathVariable Long id) {
+        model.addAttribute("author", authorDao.findByIdWithBooks(id));
+        return "author/delete";
+    }
+
+    @PostMapping("delete/{id}")
+    public String deleteConfirmation(@PathVariable Long id) {
+        authorDao.delete(authorDao.findById(id));
+        return "redirect:/author/list";
     }
     
-    @RequestMapping("/author/add")
+    @RequestMapping("/add")
     @ResponseBody
     public String save() {
         Author author = new Author();
@@ -28,14 +84,14 @@ public class AuthorController {
         return "Id dodanego autora to:" + author.getId();
     }
 
-    @RequestMapping("/author/get/{id}")
+    @RequestMapping("/get/{id}")
     @ResponseBody
     public String getAuthor(@PathVariable long id) {
         Author author = authorDao.findById(id);
         return author.toString();
     }
 
-    @RequestMapping("/author/update/{id}/{firstName}")
+    @RequestMapping("/update/{id}/{firstName}")
     @ResponseBody
     public String updateAuthor(@PathVariable long id, @PathVariable String firstName ) {
         Author author = authorDao.findById(id);
@@ -44,11 +100,13 @@ public class AuthorController {
         return author.toString();
     }
 
-    @RequestMapping("/author/delete/{id}")
-    @ResponseBody
-    public String deleteAuthor(@PathVariable long id) {
-        Author author = authorDao.findById(id);
-        authorDao.delete(author);
-        return "deleted";
-    }
+//    @RequestMapping("/delete/{id}")
+//    @ResponseBody
+//    public String deleteAuthor(@PathVariable long id) {
+//        Author author = authorDao.findById(id);
+//        authorDao.delete(author);
+//        return "deleted";
+//    }
+
+
 }

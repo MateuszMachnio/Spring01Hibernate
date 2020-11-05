@@ -18,11 +18,20 @@ public class Author {
 
     private String lastName;
 
-    @ManyToMany(mappedBy = "authors")
+    @Transient
+    private String fullName = firstName + " " + lastName;
+
+//    @ManyToMany(mappedBy = "authors")
+    @ManyToMany
+    @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "author_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Set<Book> books = new HashSet<>();
 
     public void addBook(Book book) {
         books.add(book);
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     public void setId(Long id) {
@@ -63,7 +72,6 @@ public class Author {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", books=" + books +
                 '}';
     }
 }

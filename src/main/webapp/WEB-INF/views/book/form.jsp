@@ -17,6 +17,12 @@
 
     <form:label path="publisher">Wydawca: </form:label>
     <form:select path="publisher" items="${publishers}" itemLabel="name" itemValue="id"/><br />
+
+    <form:label path="authors">Autorzy:</form:label>
+    <form:select path="authors" multiple="true">
+        <form:option value="0" label="--Select option--" />
+        <form:options items="${authors}" itemLabel="firstName" itemValue="id" />
+    </form:select><br />
     <input type="submit" value="Prześlij">
 </form:form>
 </body>

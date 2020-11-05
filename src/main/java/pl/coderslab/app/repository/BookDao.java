@@ -1,5 +1,6 @@
 package pl.coderslab.app.repository;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.app.entity.Author;
@@ -28,6 +29,11 @@ public class BookDao {
         return entityManager.find(Book.class, id);
     }
 
+    public Book findByIdWithAuthors(long id) {
+        Book book = findById(id);
+        Hibernate.initialize(book.getAuthors());
+        return book;
+    }
     public void update(Book book) {
         entityManager.merge(book);
     }
@@ -35,7 +41,6 @@ public class BookDao {
     public void delete(Book book) {
         entityManager.remove(entityManager.contains(book) ? book : entityManager.merge(book));
     }
-
 
     public List<Book> findAll() {
         TypedQuery<Book> query = entityManager.createQuery("SELECT b FROM Book b", Book.class);
