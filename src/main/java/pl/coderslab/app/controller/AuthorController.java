@@ -1,5 +1,6 @@
 package pl.coderslab.app.controller;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import pl.coderslab.app.entity.Book;
 import pl.coderslab.app.repository.AuthorDao;
 import pl.coderslab.app.repository.BookDao;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RequestMapping("/author")
@@ -55,8 +57,22 @@ public class AuthorController {
         return "author/edit";
     }
 
-    @PostMapping("/edit/{id}")
+//    @Transactional
+//    @PostMapping("/edit")
+//    public String editProcess(Author author) {
+//        Author author1 = authorDao.findByIdWithBooks(author.getId());
+//        author1.getBooks().forEach(book -> book.removeAuthor(author1));
+//        author.getBooks().forEach(book -> bookDao.findByIdWithAuthors(book.getId()).addAuthor(author));
+//        authorDao.update(author);
+//        return "redirect:/author/list";
+//    }
+
+    @Transactional
+    @PostMapping("/edit")
     public String editProcess(Author author) {
+        Author author1 = authorDao.findByIdWithBooks(author.getId());
+        author1.removeBooks();
+        Hibernate.initialize(author1.saveBooks(author.getBooks()));;
         authorDao.update(author);
         return "redirect:/author/list";
     }

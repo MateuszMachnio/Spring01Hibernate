@@ -34,8 +34,8 @@ public class BookController {
         book.setRating(9);
         book.setDescription("Opis książki2");
 
-        book.addAuthor(authorDao.findByIdWithBooks(1));
-        book.addAuthor(authorDao.findByIdWithBooks(2));
+//        book.addAuthor(authorDao.findByIdWithBooks(1));
+//        book.addAuthor(authorDao.findByIdWithBooks(2));
 
 //        Publisher publisher = new Publisher();
 //        publisher.setName("Some publisher2");

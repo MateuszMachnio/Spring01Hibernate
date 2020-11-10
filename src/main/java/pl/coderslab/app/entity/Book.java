@@ -1,9 +1,12 @@
 package pl.coderslab.app.entity;
 
 import org.hibernate.Hibernate;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,28 +18,44 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 5)
+    @NotNull
     private String title;
 
+    @Range(min = 1, max = 10)
     private int rating;
 
+    @Size(max = 600)
+    @NotBlank
     private String description;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
 
+    @NotEmpty
     @ManyToMany
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
 
-    public Book() {
+    @Min(2)
+    private int pages;
 
-    }
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    public void addAuthor(Author author) {
-        authors.add(author);
-        author.addBook(this);
-    }
+//    public void addAuthor(Author author) {
+//        author.getBooks().add(this);
+//        this.authors.add(author);
+//    }
+
+//    public void removeAuthor(Author author) {
+//        author.getBooks().remove(this);
+//        this.authors.remove(author);
+//    }
 
     public void setId(Long id) {
         this.id = id;
@@ -84,6 +103,22 @@ public class Book {
 
     public void setAuthors(Set<Author> authors) {
         this.authors = authors;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override

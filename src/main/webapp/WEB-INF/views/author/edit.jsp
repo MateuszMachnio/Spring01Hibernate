@@ -5,7 +5,7 @@
     <title>Edit author</title>
 </head>
 <body>
-<form:form modelAttribute="author">
+<form:form modelAttribute="author" method="post" action="/author/edit">
     <form:hidden path="id" />
     <form:label path="firstName">First name:</form:label>
     <form:input path="firstName" /><br />
