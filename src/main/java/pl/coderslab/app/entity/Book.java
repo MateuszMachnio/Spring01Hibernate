@@ -42,7 +42,7 @@ public class Book {
     @Min(2)
     private int pages;
 
-    @NotNull
+    @NotNull(message = "Proszę wybrać kategorię")
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

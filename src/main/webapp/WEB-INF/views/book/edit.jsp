@@ -45,8 +45,16 @@
     <form:errors path="authors" cssClass="error" />
     <br />
 
+<%--    <form:label path="category">Kategoria:</form:label>--%>
+<%--    <form:select path="category" items="${categories}" itemLabel="name" itemValue="id" />--%>
+<%--    <form:errors path="category" cssClass="error" />--%>
+<%--    <br />--%>
+
     <form:label path="category">Kategoria:</form:label>
-    <form:select path="category" items="${categories}" itemLabel="name" itemValue="id" />
+    <form:select path="category">
+        <form:option value="0" label="--Select option--" />
+        <form:options items="${categories}" itemLabel="name" itemValue="id" />
+    </form:select>
     <form:errors path="category" cssClass="error" />
     <br />
 <%--    <form:label path="category">Kategoria:</form:label>--%>

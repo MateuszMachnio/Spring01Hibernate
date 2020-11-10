@@ -16,6 +16,9 @@ public class CategoryConverter implements Converter<String, Category> {
 
     @Override
     public Category convert(String s) {
+        if (Long.parseLong(s) <= 0) {
+            return null;
+        }
 //        if (!s.matches("\\d+")) {
 //            throw new NumberFormatException("Proszę wybrać kategorię.");
 //        }

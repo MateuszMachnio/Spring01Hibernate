@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.pl.REGON;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Table(name = "publishers")
@@ -59,6 +60,22 @@ public class Publisher {
 
     public void setRegon(String regon) {
         this.regon = regon;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Publisher publisher = (Publisher) o;
+        return id.equals(publisher.id) &&
+                name.equals(publisher.name) &&
+                Objects.equals(nip, publisher.nip) &&
+                Objects.equals(regon, publisher.regon);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, nip, regon);
     }
 
     @Override
