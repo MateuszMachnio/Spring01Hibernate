@@ -1,14 +1,22 @@
 package pl.coderslab.app.entity;
 
-import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.pl.PESEL;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "authors")
@@ -33,7 +41,7 @@ public class Author {
     private String email;
 
     @NotEmpty
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors", cascade = CascadeType.MERGE)
 //    @ManyToMany
 //    @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "author_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Set<Book> books = new HashSet<>();
@@ -95,6 +103,14 @@ public class Author {
         this.books = books;
     }
 
+    public void updateBooks(Set<Book> books) {
+        List<Book> toDelete = this.books.stream()
+                .filter(b -> !books.contains(b))
+                .collect(Collectors.toList());
+        toDelete.forEach(b -> b.removeAuthor(this));
+        books.forEach(b -> b.addAuthor(this));
+    }
+
     public String getPesel() {
         return pesel;
     }
@@ -111,6 +127,18 @@ public class Author {
         this.email = email;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return Objects.equals(id, author.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     @Override
     public String toString() {

@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -35,7 +36,7 @@ public class Book {
     private Publisher publisher;
 
     @NotEmpty
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
 
@@ -47,15 +48,15 @@ public class Book {
     @JoinColumn(name = "category_id")
     private Category category;
 
-//    public void addAuthor(Author author) {
-//        author.getBooks().add(this);
-//        this.authors.add(author);
-//    }
+    public void addAuthor(Author author) {
+        author.getBooks().add(this);
+        this.authors.add(author);
+    }
 
-//    public void removeAuthor(Author author) {
-//        author.getBooks().remove(this);
-//        this.authors.remove(author);
-//    }
+    public void removeAuthor(Author author) {
+        author.getBooks().remove(this);
+        this.authors.remove(author);
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -130,5 +131,18 @@ public class Book {
                 ", description='" + description + '\'' +
                 ", publisher=" + publisher +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(id, book.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

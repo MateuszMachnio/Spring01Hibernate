@@ -1,15 +1,19 @@
 package pl.coderslab.app.controller;
 
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import pl.coderslab.app.entity.Author;
 import pl.coderslab.app.entity.Book;
 import pl.coderslab.app.repository.AuthorDao;
 import pl.coderslab.app.repository.BookDao;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RequestMapping("/author")
@@ -18,7 +22,7 @@ public class AuthorController {
 
     private final AuthorDao authorDao;
     private final BookDao bookDao;
-    
+
     public AuthorController(AuthorDao authorDao, BookDao bookDao) {
         this.authorDao = authorDao;
         this.bookDao = bookDao;
@@ -67,13 +71,17 @@ public class AuthorController {
 //        return "redirect:/author/list";
 //    }
 
+
     @Transactional
     @PostMapping("/edit")
     public String editProcess(Author author) {
-        Author author1 = authorDao.findByIdWithBooks(author.getId());
-        author1.removeBooks();
-        Hibernate.initialize(author1.saveBooks(author.getBooks()));;
-        authorDao.update(author);
+        Author dbAuthor = authorDao.findById(author.getId());
+        dbAuthor.setLastName(author.getLastName());
+        dbAuthor.setFirstName(author.getFirstName());
+        dbAuthor.setEmail(author.getEmail());
+        dbAuthor.setPesel(author.getPesel());
+        dbAuthor.updateBooks(author.getBooks());
+        authorDao.update(dbAuthor);
         return "redirect:/author/list";
     }
 
@@ -88,7 +96,7 @@ public class AuthorController {
         authorDao.delete(authorDao.findById(id));
         return "redirect:/author/list";
     }
-    
+
     @RequestMapping("/add")
     @ResponseBody
     public String save() {
@@ -109,7 +117,7 @@ public class AuthorController {
 
     @RequestMapping("/update/{id}/{firstName}")
     @ResponseBody
-    public String updateAuthor(@PathVariable long id, @PathVariable String firstName ) {
+    public String updateAuthor(@PathVariable long id, @PathVariable String firstName) {
         Author author = authorDao.findById(id);
         author.setFirstName(firstName);
         authorDao.update(author);
